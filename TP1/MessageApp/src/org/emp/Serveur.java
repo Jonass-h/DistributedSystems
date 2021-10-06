@@ -11,7 +11,7 @@ public class Serveur {
             Message stub = (Message) UnicastRemoteObject.exportObject(obj, 0);
 
             Registry registry = LocateRegistry.createRegistry(1099);
-            registry.bind("Message", stub);
+            registry.bind("ServeurCalcul", stub);
 
             System.out.println("Server ready");
         } catch (Exception e) {
