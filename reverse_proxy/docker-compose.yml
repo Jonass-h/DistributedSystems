@@ -1,0 +1,32 @@
+# docker-compose.yml
+version: '3.7'
+services:
+   server-1:
+      image: consul
+      command: consul agent -server -bootstrap-expect=3 -data-dir /tmp/consul -node=server-1
+
+   server-2:
+      image: consul
+      command: consul agent -server -bootstrap-expect=3 -data-dir /tmp/consul -retry-join=server-1 -node=server-2
+
+   server-3:
+      image: consul
+      command: consul agent -server -bootstrap-expect=3 -data-dir /tmp/consul -retry-join=server-1 -node=server-3
+
+   consul-ui:
+    image: consul
+    command: consul agent -data-dir /tmp/consul -retry-join=server-1 -client 0.0.0.0 -ui -node=client-ui
+    ports:
+        - 8500:8500
+
+   api:
+    image: consul_nginx_api:latest
+    environment:
+        - CONSUL_SERVER=server-1
+
+   load-balancer:
+    image: nginx_reverse_proxy:latest
+    environment:
+        - CONSUL_SERVER=server-1
+    ports:
+        - 5000:5000

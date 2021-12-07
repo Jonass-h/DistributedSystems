@@ -1,0 +1,3 @@
+# nginx.list
+deb http://nginx.org/packages/ubuntu/ bionic nginx
+deb-src http://nginx.org/packages/ubuntu/ bionic nginx
